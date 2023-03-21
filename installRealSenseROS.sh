@@ -15,7 +15,7 @@ INSTALL_DIR=$PWD
 # Ref: https://github.com/IntelRealSense/realsense-ros/tree/2.3.1
 REALSENSE_ROS_VERSION=2.3.1
 # Now go get ready to install realsense-ros
-source /opt/ros/melodic/setup.bash
+source /opt/ros/${ROS_DISTRO}/setup.bash
 # In L4T 32.3.1, opencv4 contains the opencv installation
 # Make a symbolic link
 cd /usr/include
@@ -89,14 +89,14 @@ patch -p1 < $INSTALL_DIR/patches/package.diff
 cd ../..
 echo $PWD
 echo "Making Intel ROS realsense-ros"
-sudo rosdep -y install --from-paths src --ignore-src --rosdistro melodic
+sudo rosdep -y install --from-paths src --ignore-src --rosdistro ${ROS_DISTRO} 
 if [ -e "$CATKIN_WORKSPACEHIDDEN" ] ; then
         echo "catkin_make starts"
 	catkin_make
 	echo "realsense-ros Package installed"
 elif [ -e "$CATKIN_BUILD_WORKSPACEHIDDEN" ] ; then
         echo "catkin_build starts"
-	catkin build
+	catkin build -j2
 	echo "realsense-ros Package installed"
 else
 	echo "Error: Could not decide to use catkin_make or catkin build"
